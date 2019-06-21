@@ -70,7 +70,7 @@ public class BookController {
     }
 
     @GetMapping
-    public Page<BookDto> getAll(Pageable pageable){     // pageble - номер запрашиваемой страницы
+    public Page<BookDto> getAll(Pageable pageable){     // pageable - номер запрашиваемой страницы
         //1. Получаем книги из базы посредством сервиса (entity)
         //2. Преобразуем entity в dto
         //3.Список dto возвращаем на фронтент
