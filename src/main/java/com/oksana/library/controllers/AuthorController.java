@@ -1,10 +1,13 @@
 package com.oksana.library.controllers;
 
 import com.oksana.library.dtos.AuthorDto;
+import com.oksana.library.dtos.BookDto;
 import com.oksana.library.entities.Author;
 import com.oksana.library.mappers.AuthorMapper;
 import com.oksana.library.services.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,5 +36,26 @@ public class AuthorController {
 
     }
 
-   // public List<Author> authorList ()
+    @GetMapping
+    public Page<AuthorDto> getAll(Pageable pageable){
+       return this.authorService.findAll(pageable).map(this.authorMapper::mapToDto);
+    }
+
+    @PutMapping(value = "/{id}")
+    public AuthorDto update(@PathVariable Long id, @RequestBody AuthorDto authorDto){
+
+        Author newAuthor = this.authorMapper.mapToEntity(authorDto);
+        this.authorService.findById(id).orElseThrow(() -> new RuntimeException("This author does not exist"));
+        newAuthor.setId(id);
+        this.authorService.save(newAuthor);
+        authorDto.setId(id);
+        return authorDto;
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public String deleteAuthor (@PathVariable Long id){
+       Author author =  this.authorService.findById(id).orElseThrow(() -> new RuntimeException("This author does not exist"));
+        this.authorService.delete(author);
+        return "Deleted";
+    }
 }
