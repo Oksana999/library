@@ -24,7 +24,7 @@ public class GenreController {
     }
 
     @PostMapping
-    public GenreDto create(GenreDto genreDto){
+    public GenreDto create(@RequestBody GenreDto genreDto){
         Genre genre = this.genreMapper.mapToEntity(genreDto);
         return this.genreMapper.mapToDto(this.genreService.create(genre));
     }

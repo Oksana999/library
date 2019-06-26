@@ -35,6 +35,11 @@ public class GenreMapperTest {
 
     @Test
     public void mapToDto() {
+        Genre genre = new Genre();
+        genre.setName("Humor");
+
+        GenreDto genreDto = this.genreMapper.mapToDto(genre);
+        Assert.assertEquals(genre.getName(), genreDto.getName());
 
     }
 }

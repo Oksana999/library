@@ -17,6 +17,7 @@ public class GenreService {
     public GenreService(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
     }
+
     public Genre create(Genre genre){
         return this.genreRepository.save(genre);
     }

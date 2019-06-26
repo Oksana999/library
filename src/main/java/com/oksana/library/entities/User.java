@@ -17,15 +17,20 @@ import java.util.Collections;
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity implements UserDetails {
+
     @Column(name = "user_name", nullable = false, unique = true)
     private String username;
+
     @Column(name = "user_email", nullable = false, unique = true)
     private String userEmail;
+
     @Column(name = "password_hash", nullable = false)
     @JsonIgnore
-    private String userPasswordHash;
+    private String userPassword;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
@@ -37,7 +42,7 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     @JsonIgnore
     public String getPassword() {
-        return null;
+        return this.userPassword;
     }
 
     @Override

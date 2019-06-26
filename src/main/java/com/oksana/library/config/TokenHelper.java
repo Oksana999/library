@@ -4,7 +4,9 @@ import com.oksana.library.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TokenHelper {
 
     private static final String ISSUER = "com.oksana.library";
