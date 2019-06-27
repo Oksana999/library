@@ -7,6 +7,7 @@ import com.oksana.library.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -47,8 +48,9 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable Long id){
-       // User deletedUser = this.userService.findById(id).orElseThrow(EntityNotFoundException::new);
-       return  this.userService.delete(id);
+        User deletedUser = this.userService.findById(id).orElseThrow(EntityNotFoundException::new);
+       this.userService.delete(deletedUser);
+       return "User "+deletedUser.getUsername()+ " has been deleted";
     }
 
     @GetMapping
@@ -57,8 +59,8 @@ public class UserController {
         return users.map(this.userMapper::mapToDto);
     }
 
-    @GetMapping("/{username}")
-    public UserDto findByUserName(@PathVariable String username){
+    @GetMapping("/search")
+    public UserDto findByUserName( @RequestParam(value = "username") String username){
         User user = this.userService.findByUsername(username).orElseThrow(EntityNotFoundException::new);
         return this.userMapper.mapToDto(user);
     }

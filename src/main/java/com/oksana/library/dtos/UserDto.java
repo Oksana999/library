@@ -9,7 +9,6 @@ public class UserDto {
     private Long id;
     private String username;
     private String userEmail;
-    private String userPassword;
     private LocalDateTime createdAt;
     private LocalDateTime deletedAt;
 }

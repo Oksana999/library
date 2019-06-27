@@ -51,11 +51,8 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
-    public String delete(Long id){
-        User deletedUser = this.userRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("User not found"));
-        this.userRepository.delete(deletedUser);
-        return "User " +deletedUser.getUsername()+ " has been deleted";
+    public void delete(User user){
+        this.userRepository.delete(user);
     }
 
     public Page<User> findAll(Pageable pageable){
