@@ -1,13 +1,15 @@
 package com.oksana.library.controllers;
 
+import com.oksana.library.config.TokenHelper;
 import com.oksana.library.dtos.UserDto;
+import com.oksana.library.dtos.UserLoginRequestDto;
 import com.oksana.library.entities.User;
 import com.oksana.library.mappers.UserMapper;
 import com.oksana.library.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.ui.Model;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -17,11 +19,15 @@ import javax.persistence.EntityNotFoundException;
 public class UserController {
     private final UserMapper userMapper;
     private final UserService userService;
+    private final TokenHelper tokenHelper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserMapper userMapper, UserService userService) {
+    public UserController(UserMapper userMapper, UserService userService, TokenHelper tokenHelper, PasswordEncoder passwordEncoder) {
         this.userMapper = userMapper;
         this.userService = userService;
+        this.tokenHelper = tokenHelper;
+        this.passwordEncoder = passwordEncoder;
     }
     @PostMapping("/create")
     public UserDto create (@RequestBody UserDto userDto){
@@ -63,5 +69,20 @@ public class UserController {
     public UserDto findByUserName( @RequestParam(value = "username") String username){
         User user = this.userService.findByUsername(username).orElseThrow(EntityNotFoundException::new);
         return this.userMapper.mapToDto(user);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody UserLoginRequestDto userLoginRequestDto){
+//        User foundedUser = this.userService.findByUsername(userLoginRequestDto.getUsername())// находим user в Бд по имени
+//                            .filter(user -> BCrypt.checkpw(userLoginRequestDto.getPassword(), user.getUserPassword()))// фильтрация найденного user по хешам пароля
+//                            .orElseThrow(() -> new EntityNotFoundException("Incorrect login or password"));// исключения в случае неуспешного прохлждения одного или всех этапов
+//        return this.tokenHelper.tokenFor(foundedUser);
+
+        User foundedUser = this.userService.findByUsername(userLoginRequestDto.getUsername()).orElseThrow(() -> new RuntimeException("User was not founded"));
+        if(foundedUser.getUserPassword().equals(this.passwordEncoder.encode(userLoginRequestDto.getPassword()))){
+            return this.tokenHelper.tokenFor(foundedUser);
+        }else{
+            throw new RuntimeException("Your password was not validated. Try again.");
+        }
     }
 }

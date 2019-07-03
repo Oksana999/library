@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 public class ReadBook extends BaseEntity{
 
     @JoinColumn(name = "user_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private User user;
 
     @JoinColumn(name = "book_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Book book;
 
     @Column(name = "date")

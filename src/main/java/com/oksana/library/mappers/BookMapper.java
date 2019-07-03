@@ -1,7 +1,9 @@
 package com.oksana.library.mappers;
 
 import com.oksana.library.Language;
+import com.oksana.library.dtos.AuthorDto;
 import com.oksana.library.dtos.BookDto;
+import com.oksana.library.dtos.GenreDto;
 import com.oksana.library.entities.Author;
 import com.oksana.library.entities.Book;
 import com.oksana.library.entities.Genre;
@@ -24,6 +26,13 @@ public class BookMapper {
     public Book mapToEntity(BookDto bookDto){
         Book result = this.modelMapper.map(bookDto, Book.class); // dto --> entity
         result.setLanguage(Language.valueOf(bookDto.getLanguage()));
+        for (AuthorDto authorDto : bookDto.getAuthorDtos() ) {
+            Author authors = this.authorMapper.mapToEntity(authorDto);
+            result.getAutors().add(authors);
+        }
+        for (GenreDto genreDto : bookDto.getGenreDtos() ) {
+           result.getGenres().add( this.genreMapper.mapToEntity(genreDto));
+        }
         return result;
     }
 

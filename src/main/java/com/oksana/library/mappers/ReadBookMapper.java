@@ -16,7 +16,10 @@ public class ReadBookMapper {
     }
 
     public ReadBookDto mapToDto(ReadBook readBook){
-        return this.modelMapper.map(readBook, ReadBookDto.class);
+        ReadBookDto result = this.modelMapper.map(readBook, ReadBookDto.class);
+        result.setBookId(readBook.getBook().getId());
+        result.setBookId(readBook.getUser().getId());
+        return result;
     }
     public ReadBook mapToEntity(ReadBookDto readBookDto){
       return   this.modelMapper.map(readBookDto, ReadBook.class);
