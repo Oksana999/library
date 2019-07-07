@@ -14,9 +14,9 @@ public class Role extends BaseEntity{
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "permission_to_role",
-            joinColumns = @JoinColumn(name = "role_id"),
+            joinColumns = @JoinColumn(name = "roles_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
     @JsonIgnore
     private Set<Permission> permissions;

@@ -3,23 +3,19 @@ package com.oksana.library.controllers;
 import com.oksana.library.config.UserHelper;
 import com.oksana.library.dtos.ReadBookDto;
 import com.oksana.library.entities.ReadBook;
-import com.oksana.library.entities.User;
 import com.oksana.library.mappers.ReadBookMapper;
 import com.oksana.library.services.ReadBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/readbook")
 public class ReadBookController {
+
     private final ReadBookService readBookService;
     private final ReadBookMapper readBookMapper;
 
