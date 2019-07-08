@@ -23,7 +23,7 @@ public class RoleController {
     }
 
     @PostMapping
-    @PermissionRequired(name = "ROLE_CREATE", description = "Manager")
+    @PermissionRequired(name = "ROLE_CREATE", description = "Only for Managers")
     public RoleDto createRole(@RequestBody RoleDto roleDto){
        return this.roleMapper.mapToDto(this.roleService.create(this.roleMapper.mapToEntity(roleDto)));
     }
@@ -35,18 +35,21 @@ public class RoleController {
       return this.roleMapper.mapToDto(role);
     }
 
-    @GetMapping
+    @GetMapping()
+    @PermissionRequired(name = "ROLE_GET_ALL")
     public List<Role> getAll(){
        return this.roleService.findAll();
     }
 
     @PutMapping("/{id}")
+    @PermissionRequired(name = "ROLE_UPDATE")
     public Role update(@PathVariable Long id, @RequestBody RoleDto roleDto){
         Role updateRole = this.roleService.update(this.roleMapper.mapToEntity(roleDto));
         return updateRole;
     }
 
     @DeleteMapping("/{id}")
+    @PermissionRequired(name = "ROLE_DELETE")
     public String delete(@PathVariable Long id, @RequestBody RoleDto roleDto){
         Role foundedRole = this.roleService.findById(id).orElseThrow(() -> new RuntimeException("Role was not found"));
         this.roleService.delete(foundedRole);

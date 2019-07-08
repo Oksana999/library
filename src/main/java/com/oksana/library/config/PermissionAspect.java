@@ -15,8 +15,11 @@ import java.lang.reflect.Method;
 public class PermissionAspect {
 
     @Before("@annotation(com.oksana.library.config.PermissionRequired)")
-    public void CheckPermission(JoinPoint joinPoint) throws Exception{
+    public void CheckPermission(JoinPoint joinPoint) throws Exception {
         User currentUser = UserHelper.getCurrentUser();
+        if(currentUser.getRole().getId().equals(1L) || currentUser.getRole().getName().equals("admin")) {
+            return;
+        }
 
         Method method = MethodSignature.class.cast(joinPoint.getSignature()).getMethod();
         String permissionName = method.getAnnotation(PermissionRequired.class).name();
@@ -34,7 +37,7 @@ public class PermissionAspect {
 
 
         if(!hasPermission) {
-            throw new Exception("You do not have permission" + permissionName);
+            throw new Exception("You do not have permission " + permissionName);
         }
 
     }

@@ -90,9 +90,9 @@ public class GenreControllerTest {
 
         GenreDto result = this.genreController.findById(id);
 
+        assertNotNull(result);
         assertEquals(genreOpt.get().getName(), result.getName());
         assertEquals(genreOpt.get().getId(), result.getId());
-        assertNotNull(result);
 
         verify(this.genreService, times(1)).findById(id);
         verify(this.genreMapper, times(1)).mapToDto(genre);
